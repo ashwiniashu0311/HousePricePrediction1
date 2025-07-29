@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>House Price Prediction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #80deea);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 60px;
+    }
+
+    .container, .feedback-section {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 40px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+      margin-top: 30px;
+    }
+
+    h2 {
+      color: #006064;
+      margin-bottom: 30px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .input-box {
+      flex: 1 1 45%;
+      background-color: #ffffffcc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .input-box input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    .submit-btn, .submit-feedback {
+      padding: 15px 40px;
+      background-color: #00838f;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover, .submit-feedback:hover {
+      background-color: #005f64;
+    }
+
+    .result-card {
+      margin-top: 30px;
+      background: #ffffffcc;
+      border-radius: 10px;
+      padding: 20px;
+      font-size: 24px;
+      color: #004d40;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .tooltip {
+      position: relative;
+      cursor: help;
+    }
+
+    .tooltip:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .input-box input::placeholder {
+      color: #00796b;
+    }
+
+    /* Feedback form styles */
+    .feedback-section form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: left;
+    }
+
+    .feedback-section .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feedback-section label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #004d40;
+    }
+
+    .feedback-section input,
+    .feedback-section textarea {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+/* Chatbot Floating Button */
+.chatbot-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.chatbot-toggle img {
+  width: 40px;
+  height: 40px;
+}
+
+/* Chatbot Main Container */
+.chatbot-container {
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  height: 400px;
+  background-color: #fefefe;
+  border: 2px solid #ffd700;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  z-index: 1001;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Header */
+.chatbot-header {
+  background-color: #ffdf57;
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Chat Messages */
+.chatbot-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.bot-message, .user-message {
+  margin-bottom: 8px;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.bot-message {
+  background-color: #f9f9f9;
+}
+
+.user-message {
+  background-color: #d0f0c0;
+  text-align: right;
+}
+
+/* Input Area */
+.chatbot-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+
+.chatbot-input input {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 0;
+  outline: none;
+}
+
+.chatbot-input button {
+  background-color: #ffd700;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Prediction Form -->
+  <div class="container">
+    <h2><i class="fas fa-house"></i> Enter House Details for Prediction</h2>
+    <form action="result">
+      <div class="input-group">
+        <div class="input-box tooltip" data-tip="Enter the average income in your area">
+          <i class="fas fa-dollar-sign"></i>
+          <label>Avg. Area Income</label>
+          <input type="text" name="n1" placeholder="e.g. 55000" required>
+        </div>
+        <div class="input-box tooltip" data-tip="How old are the houses in this area on average?">
+          <i class="fas fa-home"></i>
+          <label>Avg. House Age</label>
+          <input type="text" name="n2" placeholder="e.g. 15" required>
+        </div>
+        <div class="input-box tooltip" data-tip="Average number of rooms in houses">
+          <i class="fas fa-couch"></i>
+          <label>Avg. Rooms</label>
+          <input type="text" name="n3" placeholder="e.g. 40" required>
+        </div>
+        <div class="input-box tooltip" data-tip="Average number of bedrooms in houses">
+          <i class="fas fa-bed"></i>
+          <label>Avg. Bedrooms</label>
+          <input type="text" name="n4" placeholder="e.g. 10" required>
+        </div>
+        <div class="input-box tooltip" data-tip="Population in the area">
+          <i class="fas fa-users"></i>
+          <label>Area Population</label>
+          <input type="text" name="n5" placeholder="e.g. 200" required>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">Predict Price</button>
+    </form>
+
+    {% if result2 %}
+    <div class="result-card">
+      <strong>Predicted House Price:</strong><br>{{ result2 }}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Feedback Form -->
+  <div class="feedback-section">
+    <h2><i class="fas fa-comments"></i> We Value Your Feedback</h2>
+    <form action="/submit_feedback" method="POST">
+      <div class="form-group">
+        <label for="name"><i class="fas fa-user"></i> Your Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      </div>
+      <div class="form-group">
+        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="message"><i class="fas fa-comment-dots"></i> Message</label>
+        <textarea id="message" name="message" rows="4" placeholder="Write your feedback here..." required></textarea>
+      </div>
+      <button type="submit" class="submit-feedback">Submit Feedback</button>
+    </form>
+  </div>
+
+</script>
+
+<!-- Chatbot Icon (Cute Bee) -->
+<div class="chatbot-toggle" onclick="toggleChatbot()">
+  <img src="https://cdn-icons-png.flaticon.com/512/826/826944.png" alt="FutureBee Icon" />
+</div>
+
+<!-- Chatbot Box -->
+<div class="chatbot-container" id="chatbot">
+  <div class="chatbot-header">FutureBee Assistant</div>
+  <div class="chatbot-messages" id="chat-messages">
+    <div class="bot-message"><strong>ChatBot:</strong> Hello, FutureBees! how can I help you with the prediction form?</div>
+  </div>
+  <div class="chatbot-input">
+    <input type="text" id="user-input" placeholder="Ask something..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+</div>
+<script>
+  function toggleChatbot() {
+    const chatbot = document.getElementById('chatbot');
+    chatbot.style.display = chatbot.style.display === 'flex' ? 'none' : 'flex';
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('user-input');
+    const message = input.value.trim();
+    if (!message) return;
+
+    const chatBox = document.getElementById('chat-messages');
+
+    const userDiv = document.createElement('div');
+    userDiv.className = 'user-message';
+    userDiv.innerHTML = '<strong>FutureBees:</strong> ' + message;
+    chatBox.appendChild(userDiv);
+
+    const botDiv = document.createElement('div');
+    botDiv.className = 'bot-message';
+
+    let reply = '';
+    if (message.toLowerCase().includes('income')) {
+      reply = 'Average income helps estimate house values in the area.';
+    } else {
+      reply = 'I’m still learning, FutureBee! Try asking about the form.';
+    }
+
+    botDiv.innerHTML = '<strong>Chatbot:</strong> ' + reply;
+    chatBox.appendChild(botDiv);
+
+    input.value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+</script>
+
+
+
+</body>
+</html>
+

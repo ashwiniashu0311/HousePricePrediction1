@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #005792;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+    }
+
+    nav ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    section {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    h2 {
+      color: #005792;
+      margin-bottom: 20px;
+    }
+
+    .contact-details {
+      line-height: 2;
+      font-size: 16px;
+    }
+
+    .contact-details i {
+      margin-right: 10px;
+      color: #005792;
+    }
+
+    .contact-details a {
+      text-decoration: none;
+      color: #005792;
+    }
+
+    .contact-details a:hover {
+      text-decoration: underline;
+    }
+
+    form {
+      margin-top: 30px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #005792;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #003f6b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Contact Us</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section>
+    <h2>Get in Touch</h2>
+    <div class="contact-details">
+      <p><i class="fas fa-envelope"></i><strong>Email:</strong> <a href="mailto:team@housepredict.com">team@housepredict.com</a></p>
+      <p><i class="fas fa-phone"></i><strong>Phone:</strong> <a href="tel:‪+918888888888‬">‪+91 88888 88888‬</a></p>
+      <p><i class="fas fa-globe"></i><strong>Website:</strong> <a href="https://housepredict.com" target="_blank">housepredict.com</a></p>
+      <p><i class="fab fa-github"></i><strong>GitHub:</strong> <a href="https://github.com/HousePrediction" target="_blank">github.com/HousePrediction</a></p>
+      <p><i class="fab fa-linkedin"></i><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/housepredict" target="_blank">linkedin.com/in/housepredict</a></p>
+      <p><i class="fab fa-facebook"></i><strong>Facebook:</strong> <a href="https://facebook.com/housepredict" target="_blank">facebook.com/housepredict</a></p>
+      <p><i class="fab fa-instagram"></i><strong>Instagram:</strong> <a href="https://instagram.com/housepredict" target="_blank">@housepredict</a></p>
+    </div>
+
+    <form>
+      <h2>Send Us a Message</h2>
+      <label for="name"><i class="fas fa-user"></i> Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="message"><i class="fas fa-comment-dots"></i> Message:</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+    </form>
+  </section>
+
+</body>
+</html>
+
